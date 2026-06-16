@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>HONEW 候鳥影像 | Portfolio</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="HONEW">
+    
+    <style>
+        :root {
+            --bg-color: #e5eff2;       /* 候鳥名片空氣感淡藍底色 */
+            --text-color: #111111;     /* 極簡高對比黑 */
+            --accent-color: #00ff55;   /* 高飽和度、亮眼螢光植物綠 */
+            --card-bg: #ffffff;        
+            --text-muted: #798e9c;     
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            letter-spacing: 0.15em; 
+        }
+
+        /* 頂部品牌區 */
+        .brand-header {
+            height: 110px;
+            padding: 50px 60px 0 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-logo-wrapper {
+            width: 42px;
+            height: 42px;
+            position: relative;
+        }
+
+        .brand-logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            display: block;
+        }
+
+        .brand-logo-wrapper::after {
+            content: "";
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 9px;
+            height: 9px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            border: 1.5px solid var(--bg-color);
+            z-index: 5;
+        }
+
+        .brand-text-box {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-title-text {
+            font-size: 20px;
+            font-weight: 200; 
+            letter-spacing: 8px;
+            color: var(--text-color);
+            line-height: 1;
+        }
+
+        .brand-sub-text {
+            font-size: 9px;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-top: 6px;
+            font-weight: 400;
+        }
+
+        /* 第一層：六宮格主頁 */
+        #main-page {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 28px;
+            padding: 20px 60px 60px 60px;
+            width: 100%;
+            height: calc(100% - 110px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+        }
+
+        .portfolio-card {
+            background: var(--card-bg);
+            border-radius: 6px; 
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(121, 142, 156, 0.08);
+            border: 1px solid rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .portfolio-card:active {
+            transform: scale(0.98);
+        }
+
+        .card-image-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.65) 100%);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 300; 
+            line-height: 1.6;
+            letter-spacing: 3px;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 12px;
+        }
+
+        .card-tag {
+            font-size: 9px;
+            color: rgba(255,255,255,0.7);
+            letter-spacing: 2px;
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+
+        .card-tag.all-tag::after {
+            content: "ALL";
+            font-size: 8px;
+            font-weight: 700;
+            color: #111111;
+            background-color: var(--accent-color); 
+            padding: 1px 5px;
+            border-radius: 2px;
+            margin-left: 6px;
+            letter-spacing: 0px;
+        }
+
+        .card-arrow {
+            font-size: 11px;
+            color: rgba(255,255,255,0.8);
+            font-weight: 300;
+        }
+
+        /* 第二層：詳情展示頁 */
+        #detail-page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+            padding: 40px;
+            z-index: 100;
+        }
+
+        #detail-page.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* 返回按鈕 */
+        .back-btn {
+            position: absolute;
+            top: 50px;
+            left: 60px;
+            background: none;
+            border: none;
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            color: var(--text-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 110;
+        }
+
+        /* 💡 修正：右上角圖說改為「纖細細黑體」，字距拉開，並附帶精緻螢光綠襯線 */
+        .project-indicator {
+            position: absolute;
+            top: 48px;
+            right: 60px;
+            font-size: 15px;
+            letter-spacing: 4px;
+            color: var(--text-color);
+            font-weight: 100; /* 強制切換為最纖細黑體 */
+            z-index: 110;
+            padding-bottom: 6px;
+            border-bottom: 1.5px solid var(--accent-color); /* 💡 點綴少少螢光綠細線 */
+        }
+
+        /* 輪播核心容器 */
+        .slider-container {
+            position: relative;
+            width: 100vw; 
+            height: 74vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .slider-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .slider-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* 每個相簿物件 80% 寬度，空出兩側以便讓兩邊的非當前圖片懸浮微露 */
+        .slide-item {
+            flex: 0 0 80%;
+            width: 80%;
+            height: 100%;
+            scroll-snap-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 15px;
+            transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s ease;
+            
+            /* 非居中大圖時：半透明、毛玻璃模糊、縮小 */
+            opacity: 0.25;
+            filter: blur(8px) grayscale(0.1);
+            transform: scale(0.92);
+        }
+
+        /* 當前居中讀取的相片：100% 聚焦、大圖展現 */
+        .slide-item.active-slide {
+            opacity: 1;
+            filter: blur(0px) grayscale(0);
+            transform: scale(1);
+        }
+
+        /* 💡 修正：完全拆除原先的純白內襯白邊，讓相片盡可能撐到最大，去掉匠氣 */
+        .image-frame {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: transparent; /* 💡 移除純白背景 */
+            overflow: hidden;
+            border: none; /* 💡 移除任何白邊框 */
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 💡 確保各種長寬比的照片都能在不裁切、無邊框的情況下放到最大 */
+        }
+
+        /* 左右半透明實體導覽按鈕 */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 50%;
+            color: var(--text-color);
+            font-size: 26px;
+            font-weight: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 150;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+            transition: background 0.2s, opacity 0.2s;
+        }
+
+        .nav-arrow:active {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-arrow-left {
+            left: 45px;
+        }
+
+        .nav-arrow-right {
+            right: 45px;
+        }
+
+        /* 指示點點 */
+        .dots-container {
+            display: flex;
+            gap: 14px;
+            margin-top: 30px;
+            height: 10px;
+            align-items: center;
+        }
+
+        .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: rgba(121, 142, 156, 0.3);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .dot.active {
+            background-color: #111111;
+            box-shadow: 0 0 0 2px var(--accent-color); 
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="brand-header">
+        <div class="brand-logo-container">
+            <div class="brand-logo-wrapper">
+                <img src="images/LOGO頭貼2.png" class="brand-logo-img" alt="HONEW LOGO">
+            </div>
+            <div class="brand-text-box">
+                <div class="brand-title-text">HONEW</div>
+                <div class="brand-sub-text">候鳥影像工作室</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="main-page">
+        <div class="portfolio-card" onclick="openProject('bmw', 'BMW新竹展示中心 新車發佈/年度車主')">
+            <img src="images/6feaff1d-1edf-4dfc-b557-b74f8204d0af.jpeg" class="card-image-bg" alt="BMW">
+            <div class="card-overlay">
+                <div class="card-title">BMW新竹展示中心<br>新車發佈 / 年度車主</div>
+                <div class="card-footer">
+                    <div class="card-tag all-tag">Case 01</div>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="portfolio-card" onclick="openProject('keysight', 'keysight經銷商 示波器產品/行銷')">
+            <img src="images/aae5e189-6136-4cb0-94c8-6b19507d7d92.jpeg" class="card-image-bg" alt="Keysight">
+            <div class="card-overlay">
+                <div class="card-title">keysight經銷商<br>示波器產品 / 行銷</div>
+                <div class="card-footer">
+                    <div class="card-tag">Case 02</div>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="portfolio-card" onclick="openProject('drink', '飲料店')">
+            <img src="images/1effc1ef-4b26-4ce0-87b4-73a4f3240e26.jpeg" class="card-image-bg" alt="Drink">
+            <div class="card-overlay">
+                <div class="card-title">飲料店<br>品牌視覺</div>
+                <div class="card-footer">
+                    <div class="card-tag">Case 03</div>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="portfolio-card" onclick="openProject('food', '市售食品加工產品商攝')">
+            <img src="images/_DSC6664.jpg" class="card-image-bg" alt="Food">
+            <div class="card-overlay">
+                <div class="card-title">市售食品加工產品<br>商業攝影</div>
+                <div class="card-footer">
+                    <div class="card-tag">Case 04</div>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="portfolio-card" onclick="openProject('portrait', '專輯封面形象照')">
+            <img src="images/0bcbc4b8-9a41-4f05-a98d-c0dbf2838e84.jpeg" class="card-image-bg" alt="Portrait">
+            <div class="card-overlay">
+                <div class="card-title">專輯封面<br>形象照</div>
+                <div class="card-footer">
+                    <div class="card-tag">Case 05</div>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="portfolio-card" onclick="openProject('space', '空間/展場攝影')">
+            <img src="images/hero-01.jpg" class="card-image-bg" alt="Space">
+            <div class="card-overlay">
+                <div class="card-title">空間 / 展場攝影<br>專業紀實</div>
+                <div class="card-footer">
+                    <div class="card-tag">Case 06</div>
+                    <div class="card-arrow">→</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="detail-page">
+        <button class="back-btn" onclick="closeProject()">
+            <span>←</span> INDEX
+        </button>
+        
+        <div class="project-indicator" id="project-title-indicator">PROJECT</div>
+        
+        <div class="slider-container">
+            <button class="nav-arrow nav-arrow-left" onclick="navigateSlider(-1)">‹</button>
+            <button class="nav-arrow nav-arrow-right" onclick="navigateSlider(1)">›</button>
+            
+            <div class="slider-wrapper" id="slider-wrapper" onscroll="handleScroll()">
+                </div>
+        </div>
+
+        <div class="dots-container" id="dots-container">
+            </div>
+    </div>
+
+    <script>
+        /* ==========================================================================
+           【圖片路徑資料庫】
+           ========================================================================== */
+
+        const space_gallery = [
+            "images/hero-01.jpg", "images/坪林 day2-20.jpg", "images/坪林 day2-32.jpg",
+            "images/hero-03.jpg", "images/portfolio-03.jpg", "images/portfolio-04.jpg", "images/portfolio-06.jpg"
+        ];
+
+        const keysight_gallery = [
+            "images/aae5e189-6136-4cb0-94c8-6b19507d7d92.jpeg",
+            "images/801a201a-3cda-4146-97e9-242420ad4c52.jpeg",
+            "images/acd1f03f-16cd-466b-8a16-2821c89d4b41.jpeg"
+        ];
+
+        const drink_gallery = [
+            "images/1effc1ef-4b26-4ce0-87b4-73a4f3240e26.jpeg",
+            "images/868cffa5-1fed-4d0f-92ce-71a01276a521.jpeg",
+            "images/955f84d7-b47a-48b8-a819-6a38f233cfa.jpeg"
+        ];
+
+        const food_gallery = [
+            "images/_DSC6664.jpg", "images/_DSC6463-編輯.jpg", "images/_DSC6698.jpg"
+        ];
+
+        const portrait_gallery = [
+            "images/0bcbc4b8-9a41-4f05-a98d-c0dbf2838e84.jpeg",
+            "images/86db4508-5e7d-4f58-bead-a7cb793e7d13.jpeg",
+            "images/b995dc89-462a-4f8a-ab50-ee902443bbdf.jpeg"
+        ];
+
+        const projectImages = {
+            'bmw': [
+                "images/6feaff1d-1edf-4dfc-b557-b74f8204d0af.jpeg", 
+                "images/aae5e189-6136-4cb0-94c8-6b19507d7d92.jpeg", 
+                "images/1effc1ef-4b26-4ce0-87b4-73a4f3240e26.jpeg", 
+                "images/_DSC6664.jpg", 
+                "images/0bcbc4b8-9a41-4f05-a98d-c0dbf2838e84.jpeg", 
+                "images/hero-01.jpg",
+                "images/434745f5-0181-437b-99e7-6c430a90581b.jpeg", 
+                "images/b2cfcf5f-2085-498c-9be9-4ce88f466361.jpeg"  
+            ], 
+            'keysight': keysight_gallery,
+            'drink': drink_gallery,
+            'food': food_gallery,
+            'portrait': portrait_gallery,
+            'space': space_gallery
+        };
+
+        let currentProjectImages = [];
+
+        function openProject(projectId, projectTitle) {
+            const wrapper = document.getElementById('slider-wrapper');
+            const dotsContainer = document.getElementById('dots-container');
+            const titleIndicator = document.getElementById('project-title-indicator');
+            
+            titleIndicator.innerText = projectTitle;
+            
+            wrapper.innerHTML = '';
+            dotsContainer.innerHTML = '';
+            
+            currentProjectImages = projectImages[projectId] || [];
+            
+            // 兩側留白空白防卡滑區塊
+            const padLeft = document.createElement('div');
+            padLeft.style.flex = '0 0 10%';
+            wrapper.appendChild(padLeft);
+
+            currentProjectImages.forEach((imgSrc, index) => {
+                const slide = document.createElement('div');
+                slide.className = `slide-item ${index === 0 ? 'active-slide' : ''}`;
+                slide.innerHTML = `
+                    <div class="image-frame">
+                        <img src="${imgSrc}" alt="Gallery" draggable="false">
+                    </div>
+                `;
+                wrapper.appendChild(slide);
+                
+                const dot = document.createElement('div');
+                dot.className = `dot ${index === 0 ? 'active' : ''}`;
+                dotsContainer.appendChild(dot);
+            });
+
+            const padRight = document.createElement('div');
+            padRight.style.flex = '0 0 10%';
+            wrapper.appendChild(padRight);
+            
+            document.getElementById('main-page').style.opacity = '0';
+            document.getElementById('main-page').style.transform = 'scale(0.97)';
+            document.getElementById('detail-page').classList.add('active');
+            
+            wrapper.scrollLeft = 0;
+            setTimeout(handleScroll, 50); 
+        }
+
+        function closeProject() {
+            document.getElementById('detail-page').classList.remove('active');
+            document.getElementById('main-page').style.opacity = '1';
+            document.getElementById('main-page').style.transform = 'scale(1)';
+        }
+
+        function navigateSlider(direction) {
+            const wrapper = document.getElementById('slider-wrapper');
+            const slides = wrapper.querySelectorAll('.slide-item');
+            if (slides.length === 0) return;
+            
+            const slideWidth = slides[0].offsetWidth;
+            wrapper.scrollLeft += direction * slideWidth;
+        }
+
+        function handleScroll() {
+            const wrapper = document.getElementById('slider-wrapper');
+            const slides = wrapper.querySelectorAll('.slide-item');
+            const dots = document.querySelectorAll('.dot');
+            if (slides.length === 0) return;
+
+            const wrapperCenter = wrapper.scrollLeft + (wrapper.offsetWidth / 2);
+            let activeIndex = 0;
+            let minDistance = Infinity;
+
+            slides.forEach((slide, index) => {
+                const slideCenter = slide.offsetLeft + (slide.offsetWidth / 2);
+                const distance = Math.abs(wrapperCenter - slideCenter);
+
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    activeIndex = index;
+                }
+            });
+
+            slides.forEach((slide, index) => {
+                if (index === activeIndex) {
+                    slide.classList.add('active-slide');
+                } else {
+                    slide.classList.remove('active-slide');
+                }
+            });
+
+            dots.forEach((dot, index) => {
+                if (index === activeIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
